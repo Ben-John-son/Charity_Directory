@@ -3,10 +3,11 @@
 import React, { useEffect, useState } from 'react';
 import { Button } from 'react-bootstrap';
 import Link from 'next/link';
-import getCharities from '../../api/charityAPI';
+
 // import Link from 'next/link';
 // import { useAuth } from '../../utils/context/authContext';
 import CharityCard from '../../components/CharityCard';
+import { getCharities } from '../../api/charityAPI';
 
 function Home() {
   // TODO: Set a state for books
@@ -15,12 +16,10 @@ function Home() {
   // TODO: Get user ID using useAuth Hook
   // const { user } = useAuth();
 
-  // TODO: create a function that makes the API call to get all the books
   const getAllCharities = () => {
     getCharities().then(setCharities);
   };
 
-  // TODO: make the call to the API to get all the books on component render
   useEffect(() => {
     getAllCharities();
   }, []);
