@@ -2,3 +2,23 @@ body {
   background: black;
   color: white;
 }
+
+
+.charityCard {
+  display: flex;
+  flex-direction: column;
+
+}
+
+.addCharityBtn {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+}
+
+.d-flex.flex-wrap {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  gap: 10px;
+}
