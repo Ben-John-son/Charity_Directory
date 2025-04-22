@@ -1,11 +1,16 @@
 'use client';
 
 import React from 'react';
-import { Card } from 'react-bootstrap';
+import { Card, Button } from 'react-bootstrap';
 import ListGroup from 'react-bootstrap/ListGroup';
 import PropTypes from 'prop-types';
+import Link from 'next/link';
+import { useAuth } from '../utils/context/authContext';
+import { deleteCharity } from '../api/charityAPI';
 
 export default function CharityCard({ charityObj }) {
+  const { user } = useAuth();
+
   return (
     <div className="charityCard">
       <br />
@@ -26,7 +31,18 @@ export default function CharityCard({ charityObj }) {
           </ListGroup.Item>
         </ListGroup>
         <Card.Body>
-          <Card.Link href="#">Edit</Card.Link>
+          {charityObj.userUid === user.uid && (
+            <>
+              <Link href={`charities/edit/${charityObj.id}`} passHref>
+                <Button variant="primary" className="m-2">
+                  EDIT
+                </Button>
+              </Link>
+              <Button variant="danger" onClick={() => deleteCharity(charityObj.id)}>
+                DELETE
+              </Button>
+            </>
+          )}
           <Card.Link href="#">Delete</Card.Link>
         </Card.Body>
       </Card>
@@ -43,5 +59,7 @@ CharityCard.propTypes = {
     city: PropTypes.string.isRequired,
     zip: PropTypes.string.isRequired,
     state: PropTypes.string.isRequired,
+    id: PropTypes.string.isRequired,
+    userUid: PropTypes.string.isRequired,
   }),
 };
