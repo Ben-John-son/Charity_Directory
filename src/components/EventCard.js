@@ -25,7 +25,7 @@ export default function EventCard({ eventObj }) {
         </Card.Body>
 
         <Card.Body>
-          <Card.Link href="#">Edit</Card.Link>
+          <Card.Link href="/events/edit">Edit</Card.Link>
           <Card.Link href="#">Delete</Card.Link>
         </Card.Body>
       </Card>
@@ -46,5 +46,6 @@ EventCard.propTypes = {
     contactEmail: PropTypes.string.isRequired,
     contactPhone: PropTypes.string.isRequired,
     date: PropTypes.string.isRequired,
+    id: PropTypes.string.isRequired,
   }),
 };
