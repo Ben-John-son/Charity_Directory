@@ -3,8 +3,15 @@
 import React from 'react';
 import { Card } from 'react-bootstrap';
 import PropTypes from 'prop-types';
+import { deleteEvent } from '../api/eventAPI';
 
-export default function EventCard({ eventObj }) {
+export default function EventCard({ eventObj, onUpdate }) {
+  const deleteThisEvent = () => {
+    if (window.confirm(`Delete ${eventObj.name}?`)) {
+      deleteEvent(eventObj.id).then(() => onUpdate());
+    }
+  };
+
   return (
     <div className="charityCard">
       <br />
@@ -24,9 +31,10 @@ export default function EventCard({ eventObj }) {
           <Card.Text>{eventObj.contactPhone}</Card.Text>
         </Card.Body>
 
+        {/* Links to other routes */}
         <Card.Body>
           <Card.Link href="/events/edit">Edit</Card.Link>
-          <Card.Link href="#">Delete</Card.Link>
+          <Card.Link onClick={deleteThisEvent}>Delete</Card.Link>
         </Card.Body>
       </Card>
     </div>
@@ -48,4 +56,5 @@ EventCard.propTypes = {
     date: PropTypes.string.isRequired,
     id: PropTypes.string.isRequired,
   }),
+  onUpdate: PropTypes.func.isRequired,
 };

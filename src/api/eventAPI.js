@@ -54,7 +54,7 @@ const getSingleEvent = (id) =>
 // DELETE EVENT
 const deleteEvent = (id) =>
   new Promise((resolve, reject) => {
-    fetch(`${endpoint}/api/events/${id}.json`, {
+    fetch(`${endpoint}/api/events/${id}`, {
       method: 'DELETE',
       headers: {
         'Content-Type': 'application/json',
@@ -68,8 +68,8 @@ const deleteEvent = (id) =>
 // UPDATE EVENT
 const updateEvents = (id) =>
   new Promise((resolve, reject) => {
-    fetch(`${endpoint}/authors/${id}.json`, {
-      method: 'PATCH',
+    fetch(`${endpoint}/api/events/${id}`, {
+      method: 'PUT',
       headers: {
         'Content-Type': 'application/json',
       },
@@ -80,7 +80,7 @@ const updateEvents = (id) =>
       .catch(reject);
   });
 
-//  GET A SINGLE Charity by its event
+//  GET A SINGLE Charity by its event id
 const getEventsCharity = (id) =>
   new Promise((resolve, reject) => {
     fetch(`${endpoint}/api/charities/${id}`, {

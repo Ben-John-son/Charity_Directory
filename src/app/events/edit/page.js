@@ -15,7 +15,20 @@ export default function EditEvent({ params }) {
   }, [charityId]);
 
   // TODO: pass object to form
-  return <EventForm obj={editItem} />;
+  return (
+    <div
+      className="text-center d-flex flex-column justify-content-center align-items-center"
+      style={{
+        height: '90vh',
+        padding: '30px',
+        maxWidth: 'auto',
+        margin: '0 auto',
+        background: '#D3F2E3',
+      }}
+    >
+      <EventForm obj={editItem} />
+    </div>
+  );
 }
 
 EditEvent.propTypes = {
