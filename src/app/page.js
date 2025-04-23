@@ -1,6 +1,6 @@
 'use client';
 
- // any component that uses useAuth needs this because if a component directly imports useAuth, it needs to be a client component since useAuth uses React hooks.
+// any component that uses useAuth needs this because if a component directly imports useAuth, it needs to be a client component since useAuth uses React hooks.
 
 import { Button } from 'react-bootstrap';
 import { signOut } from '@/utils/auth'; // anything in the src dir, you can use the @ instead of relative paths
@@ -11,12 +11,13 @@ function Home() {
 
   return (
     <div
-      className="text-center d-flex flex-column justify-content-center align-content-center"
+      className="text-center d-flex flex-column justify-content-center align-items-center"
       style={{
         height: '90vh',
         padding: '30px',
-        maxWidth: '400px',
+        maxWidth: 'auto',
         margin: '0 auto',
+        background: '#D3F2E3',
       }}
     >
       <h1>Hello {user.displayName}! </h1>

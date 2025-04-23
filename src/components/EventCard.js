@@ -11,6 +11,7 @@ export default function EventCard({ eventObj }) {
       <Card style={{ width: '15rem' }}>
         <Card.Img variant="top" src="https://cdn-icons-png.freepik.com/512/9548/9548191.png" />
         <Card.Body>
+          <Card.Img variant="top" src={eventObj.image} />
           <Card.Title>{eventObj.name}</Card.Title>
           <Card.Text>{eventObj.description}</Card.Text>
           <Card.Text>{eventObj.date}</Card.Text>

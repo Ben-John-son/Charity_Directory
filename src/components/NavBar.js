@@ -6,10 +6,11 @@ import { signOut } from '../utils/auth';
 
 export default function NavBar() {
   return (
-    <Navbar collapseOnSelect expand="lg" bg="dark" variant="dark">
+    <Navbar collapseOnSelect expand="lg" style={{ background: ' #7C4C21' }}>
       <Container>
+        <img src="https://i.imgur.com/CY7xcWk.png" alt="GiveHub Logo" width="50" height="50" className="d-inline-block align-top me-2" />
         <Link passHref href="/" className="navbar-brand">
-          CHANGE ME
+          GiveHub
         </Link>
         <Navbar.Toggle aria-controls="responsive-navbar-nav" />
         <Navbar.Collapse id="responsive-navbar-nav">
@@ -20,6 +21,9 @@ export default function NavBar() {
             </Link>
             <Link className="nav-link" href="/charities">
               All Charities
+            </Link>
+            <Link className="nav-link" href="/events">
+              All Events
             </Link>
             <Link className="nav-link" href="/charities/myCharities">
               My Charities
