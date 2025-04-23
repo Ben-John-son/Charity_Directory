@@ -13,15 +13,11 @@ function Home() {
   // TODO: Get user ID using useAuth Hook
   // const { user } = useAuth();
 
-  const getMyCharities = () => {
+  useEffect(() => {
     myCharities().then((data) => {
       const charitiesArray = Array.isArray(data) ? data : [data];
       setCharities(charitiesArray);
     });
-  };
-
-  useEffect(() => {
-    getMyCharities();
   }, []);
 
   return (

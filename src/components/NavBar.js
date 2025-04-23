@@ -28,7 +28,6 @@ export default function NavBar() {
             <Link className="nav-link" href="/charities/myCharities">
               My Charities
             </Link>
-            <search className="nav-link">example</search>
           </Nav>
 
           <Button variant="danger" onClick={signOut}>
