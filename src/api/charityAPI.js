@@ -71,8 +71,32 @@ const deleteCharity = (id) =>
       .catch(reject);
   });
 
-// const createCharity = () => new Promise((resolve, reject) => {
-//   fetch(`${endpoint}`)
-// }
+const updateCharity = (payload) =>
+  new Promise((resolve, reject) => {
+    fetch(`${endpoint}/api/charities/${payload.id}`, {
+      method: 'PUT',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(payload),
+    })
+      .then((response) => response.json())
+      .then((data) => resolve(data))
+      .catch(reject);
+  });
 
-export { getCharities, getSingleCharity, myCharities, deleteCharity };
+const createCharity = (payload) =>
+  new Promise((resolve, reject) => {
+    fetch(`${endpoint}/api/charities`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(payload),
+    })
+      .then((response) => response.json())
+      .then((data) => resolve(data))
+      .catch(reject);
+  });
+
+export { getCharities, getSingleCharity, myCharities, deleteCharity, updateCharity, createCharity };
