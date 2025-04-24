@@ -7,10 +7,15 @@ import PropTypes from 'prop-types';
 // import { useAuth } from '../../utils/context/authContext';
 import EventCard from '@/components/EventCard';
 import { getEvents } from '@/api/eventAPI';
+import { useAuth } from '@/utils/context/authContext';
+import { Button } from 'react-bootstrap';
+import Link from 'next/link';
+import { getSingleCharity } from '@/api/charityAPI';
 
 function Events({ params }) {
   // Set a state for Events
   const [events, setEvents] = useState([]);
+  const [charityInfo, setCharityInfo] = useState([]); // State to hold charity information
 
   const { charityId } = params; // Extract charityId from params
 
@@ -18,8 +23,11 @@ function Events({ params }) {
     getEvents(charityId).then(setEvents);
   };
 
+  const { user } = useAuth(); // may use this for user authentication in the future
+
   useEffect(() => {
     getAllEvents();
+    getSingleCharity(charityId).then(setCharityInfo);
   }, []);
 
   return (
@@ -32,6 +40,13 @@ function Events({ params }) {
         margin: '0 auto',
       }}
     >
+      {charityInfo.userUid === user.uid && (
+        <div className="addEventBtn">
+          <Link href={`/events/new/${charityId}`} passHref>
+            <Button>Add an Event</Button>
+          </Link>
+        </div>
+      )}
       {/* This function maps over Events here using EventCard component */}
       {events.map((event) => (
         <EventCard key={event.id} eventObj={event} onUpdate={getAllEvents} />

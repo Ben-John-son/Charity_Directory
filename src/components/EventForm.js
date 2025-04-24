@@ -1,6 +1,6 @@
 'use client';
 
-import { useRouter } from 'next/router';
+import { useRouter } from 'next/navigation';
 import Form from 'react-bootstrap/Form';
 import { useEffect, useState } from 'react';
 import { Button } from 'react-bootstrap';
@@ -22,7 +22,7 @@ const initalState = {
   date: '',
 };
 
-function EventForm({ obj = initalState }) {
+function EventForm({ obj = initalState, params }) {
   const [eventInput, setEventInput] = useState(obj);
   const router = useRouter();
   const { user } = useAuth();
@@ -39,15 +39,16 @@ function EventForm({ obj = initalState }) {
     }));
   };
 
+  const { idCharity } = params;
+
   const handleSubmit = (e) => {
     e.preventDefault();
     if (obj.id) {
-      updateEvents(eventInput).then(() => router.push(`/events/${obj.id}`));
+      updateEvents(eventInput).then(() => router.push(`/events/${obj.charityId}`));
     } else {
-      const payload = { ...eventInput, uid: user.uid };
-      createEvent(payload).then(({ name }) => {
-        const patchPayload = { charityId: name };
-        updateEvents(patchPayload).then(() => {
+      const payload = { ...eventInput, userUid: user.uid, charityId: idCharity };
+      createEvent(payload).then(() => {
+        updateEvents(eventInput).then(() => {
           router.push('/events');
         });
       });
@@ -60,11 +61,13 @@ function EventForm({ obj = initalState }) {
         <Form.Label>Image</Form.Label>
         <Form.Control type="text" placeholder="image" name="image" value={eventInput.image} onChange={handleChange} required />
         <Form.Label>Event Name</Form.Label>
-        <Form.Control type="text" placeholder="name" name="image" value={eventInput.name} onChange={handleChange} required />
+        <Form.Control type="text" placeholder="name" name="name" value={eventInput.name} onChange={handleChange} required />
         <Form.Label>Description</Form.Label>
         <Form.Control as="textarea" rows={3} name="description" value={eventInput.description} onChange={handleChange} required />
-        <Form.Label>Phone</Form.Label>
-        <Form.Control type="text" placeholder="phone" name="phone" value={eventInput.phone} onChange={handleChange} required />
+        <Form.Label>Contact Name</Form.Label>
+        <Form.Control type="text" placeholder="name" name="contactName" value={eventInput.contactName} onChange={handleChange} required />
+        <Form.Label>Contact Phone</Form.Label>
+        <Form.Control type="text" placeholder="phone" name="contactPhone" value={eventInput.contactPhone} onChange={handleChange} required />
         <Form.Label>street</Form.Label>
         <Form.Control type="text" placeholder="street" name="street" value={eventInput.street} onChange={handleChange} required />
         <Form.Label>City</Form.Label>
@@ -75,8 +78,8 @@ function EventForm({ obj = initalState }) {
         <Form.Control type="text" placeholder="zip" name="zip" value={eventInput.zip} onChange={handleChange} required />
         <Form.Label>Date</Form.Label>
         <Form.Control type="date" placeholder="date" name="date" value={eventInput.date} onChange={handleChange} required />
-        <Form.Label>Email</Form.Label>
-        <Form.Control type="email" placeholder="email" name="email" value={eventInput.email} onChange={handleChange} required />
+        <Form.Label>Contact Email</Form.Label>
+        <Form.Control type="email" placeholder="email" name="contactEmail" value={eventInput.contactEmail} onChange={handleChange} required />
       </Form.Group>
 
       {/* SUBMIT BUTTON  */}
@@ -100,5 +103,6 @@ EventForm.propTypes = {
     date: PropTypes.string.isRequired,
     id: PropTypes.string.isRequired,
   }),
+  params: PropTypes.objectOf({}).isRequired,
 };
 export default EventForm;

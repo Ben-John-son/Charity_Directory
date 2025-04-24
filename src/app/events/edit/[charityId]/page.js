@@ -3,7 +3,7 @@
 import React, { useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
 import EventForm from '@/components/EventForm';
-import { getSingleEvent } from '../../../api/eventAPI';
+import { getSingleEvent } from '@/api/eventAPI';
 
 export default function EditEvent({ params }) {
   const [editItem, setEditItem] = useState({});

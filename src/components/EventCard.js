@@ -1,17 +1,14 @@
 'use client';
 
 import React from 'react';
-import { Card } from 'react-bootstrap';
+import { Button, Card } from 'react-bootstrap';
 import PropTypes from 'prop-types';
+import Link from 'next/link';
 import { deleteEvent } from '../api/eventAPI';
+import { useAuth } from '../utils/context/authContext';
 
-export default function EventCard({ eventObj, onUpdate }) {
-  const deleteThisEvent = () => {
-    if (window.confirm(`Delete ${eventObj.name}?`)) {
-      deleteEvent(eventObj.id).then(() => onUpdate());
-    }
-  };
-
+export default function EventCard({ eventObj }) {
+  const { user } = useAuth();
   return (
     <div className="eventCard">
       <br />
@@ -31,10 +28,20 @@ export default function EventCard({ eventObj, onUpdate }) {
           <Card.Text>{eventObj.contactPhone}</Card.Text>
         </Card.Body>
 
-        {/* Links to other routes */}
         <Card.Body>
-          <Card.Link href="/events/edit">Edit</Card.Link>
-          <Card.Link onClick={deleteThisEvent}>Delete</Card.Link>
+          {eventObj.userUid === user.uid && (
+            <>
+              <Link href={`events/edit/${eventObj.id}`} passHref>
+                <Button variant="primary" className="m-2">
+                  EDIT
+                </Button>
+              </Link>
+              <Button variant="danger" onClick={() => deleteEvent(eventObj.id)}>
+                DELETE
+              </Button>
+            </>
+          )}
+          <Card.Link href="#">Delete</Card.Link>
         </Card.Body>
       </Card>
     </div>
@@ -55,6 +62,6 @@ EventCard.propTypes = {
     contactPhone: PropTypes.string.isRequired,
     date: PropTypes.string.isRequired,
     id: PropTypes.string.isRequired,
+    userUid: PropTypes.string.isRequired,
   }),
-  onUpdate: PropTypes.func.isRequired,
 };

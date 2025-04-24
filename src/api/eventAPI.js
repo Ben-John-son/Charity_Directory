@@ -76,7 +76,7 @@ const updateEvents = (id) =>
       body: JSON.stringify(id),
     })
       .then((response) => response.json())
-      .then((data) => resolve(data))
+      .then(resolve)
       .catch(reject);
   });
 
