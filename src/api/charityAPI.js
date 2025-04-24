@@ -28,7 +28,7 @@ const getCharities = () =>
 
 const getSingleCharity = (id) =>
   new Promise((resolve, reject) => {
-    fetch(`${endpoint}/${id}`, {
+    fetch(`${endpoint}/api/charities/${id}`, {
       method: 'GET',
       headers: {
         'Content-Type': 'application/json',
@@ -60,7 +60,7 @@ const myCharities = (uid) =>
 
 const deleteCharity = (id) =>
   new Promise((resolve, reject) => {
-    fetch(`${endpoint}/${id}`, {
+    fetch(`${endpoint}/api/charities/${Number(id)}`, {
       method: 'DELETE',
       headers: {
         'Content-Type': 'application/json',
@@ -73,7 +73,7 @@ const deleteCharity = (id) =>
 
 const updateCharity = (payload) =>
   new Promise((resolve, reject) => {
-    fetch(`${endpoint}/api/charities/${payload.id}`, {
+    fetch(`${endpoint}/api/charities/${Number(payload.id)}`, {
       method: 'PUT',
       headers: {
         'Content-Type': 'application/json',
@@ -81,7 +81,7 @@ const updateCharity = (payload) =>
       body: JSON.stringify(payload),
     })
       .then((response) => response.json())
-      .then((data) => resolve(data))
+      .then(resolve)
       .catch(reject);
   });
 

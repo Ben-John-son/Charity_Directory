@@ -8,8 +8,13 @@ import Link from 'next/link';
 import { useAuth } from '../utils/context/authContext';
 import { deleteCharity } from '../api/charityAPI';
 
-export default function CharityCard({ charityObj }) {
+export default function CharityCard({ charityObj, onUpdate }) {
   const { user } = useAuth();
+  const deleteThisCharity = () => {
+    if (window.confirm(`Delete ${charityObj.name}?`)) {
+      deleteCharity(charityObj.id).then(() => onUpdate());
+    }
+  };
 
   return (
     <div className="charityCard">
@@ -38,12 +43,11 @@ export default function CharityCard({ charityObj }) {
                   EDIT
                 </Button>
               </Link>
-              <Button variant="danger" onClick={() => deleteCharity(charityObj.id)}>
+              <Button variant="danger" onClick={deleteThisCharity}>
                 DELETE
               </Button>
             </>
           )}
-          <Card.Link href="#">Delete</Card.Link>
         </Card.Body>
       </Card>
     </div>
@@ -62,4 +66,5 @@ CharityCard.propTypes = {
     id: PropTypes.string.isRequired,
     userUid: PropTypes.string.isRequired,
   }),
+  onUpdate: PropTypes.func.isRequired,
 };

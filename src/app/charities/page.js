@@ -34,7 +34,7 @@ function Home() {
       </div>
       <div className="d-flex flex-wrap">
         {charities.map((charity) => (
-          <CharityCard key={charity.id} charityObj={charity} />
+          <CharityCard key={charity.id} charityObj={charity} onUpdate={getAllCharities} />
         ))}
       </div>
     </div>
