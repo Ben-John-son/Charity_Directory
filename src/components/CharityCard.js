@@ -18,7 +18,7 @@ export default function CharityCard({ charityObj }) {
         <Card.Img variant="top" src="https://cdn-icons-png.freepik.com/512/9548/9548191.png" />
         <Card.Body>
           <Card.Title>{charityObj.name}</Card.Title>
-          <Card.Text>Charity Description</Card.Text>
+          <Card.Text>{charityObj.description}</Card.Text>
         </Card.Body>
         <ListGroup className="list-group-flush">
           <ListGroup.Item>{charityObj.contactPhone}</ListGroup.Item>
@@ -61,5 +61,6 @@ CharityCard.propTypes = {
     state: PropTypes.string.isRequired,
     id: PropTypes.string.isRequired,
     userUid: PropTypes.string.isRequired,
+    description: PropTypes.string.isRequired,
   }),
 };

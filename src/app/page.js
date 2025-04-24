@@ -21,23 +21,22 @@ function Home() {
   }, []);
 
   return (
-    <div
-      className="text-center d-flex flex-column justify-content-center align-items-center"
-      style={{
-        height: '90vh',
-        padding: '30px',
-        maxWidth: 'auto',
-        margin: '0 auto',
-        background: '#D3F2E3',
-      }}
-    >
-      <div className="text-center my-4">
-        <div className="d-flex flex-wrap">
-          {charities.map((charity) => {
-            console.log('Rendering charity:', charity);
-            return <CharityCard key={charity.id} charityObj={charity} />;
-          })}
-        </div>
+    // <div
+    //   className="text-center d-flex flex-column justify-content-center align-items-center"
+    //   style={{
+    //     height: '90vh',
+    //     padding: '30px',
+    //     maxWidth: 'auto',
+    //     margin: '0 auto',
+    //     background: '#D3F2E3',
+    //   }}
+    // >
+    <div className="text-center my-4">
+      <div className="d-flex flex-wrap">
+        {charities.map((charity) => {
+          console.log('Rendering charity:', charity);
+          return <CharityCard key={charity.id} charityObj={charity} />;
+        })}
       </div>
     </div>
   );
