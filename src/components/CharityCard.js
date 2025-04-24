@@ -32,7 +32,7 @@ export default function CharityCard({ charityObj, onUpdate }) {
           </ListGroup.Item>
           <ListGroup.Item>{charityObj.contactEmail}</ListGroup.Item>
           <ListGroup.Item>
-            <Card.Link href="#">Events</Card.Link>
+            <Card.Link href={`events/${charityObj.id}`}>Events</Card.Link>
           </ListGroup.Item>
         </ListGroup>
         <Card.Body>

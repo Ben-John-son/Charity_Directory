@@ -1,15 +1,16 @@
 /* eslint-disable jsx-a11y/anchor-is-valid */
 import React from 'react';
 import Link from 'next/link';
-import { Navbar, Container, Nav, Button } from 'react-bootstrap';
+import { Navbar, Container, Nav, Button, Form, FormControl } from 'react-bootstrap';
 import { signOut } from '../utils/auth';
 
 export default function NavBar() {
   return (
-    <Navbar collapseOnSelect expand="lg" bg="dark" variant="dark">
+    <Navbar collapseOnSelect expand="lg" style={{ background: ' #7C4C21' }}>
       <Container>
+        <img src="https://i.imgur.com/CY7xcWk.png" alt="GiveHub Logo" width="50" height="50" className="d-inline-block align-top me-2" />
         <Link passHref href="/" className="navbar-brand">
-          CHANGE ME
+          GiveHub
         </Link>
         <Navbar.Toggle aria-controls="responsive-navbar-nav" />
         <Navbar.Collapse id="responsive-navbar-nav">
@@ -21,10 +22,18 @@ export default function NavBar() {
             <Link className="nav-link" href="/charities">
               All Charities
             </Link>
+            <Link className="nav-link" href="/events">
+              All Events
+            </Link>
             <Link className="nav-link" href="/charities/myCharities">
               My Charities
             </Link>
           </Nav>
+
+          {/* Search Bar */}
+          <Form className="d-flex me-3">
+            <FormControl type="search" placeholder="Search" className="me-2" aria-label="Search" />
+          </Form>
 
           <Button variant="danger" onClick={signOut}>
             Sign Out
