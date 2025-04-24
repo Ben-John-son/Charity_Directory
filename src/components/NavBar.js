@@ -1,7 +1,7 @@
 /* eslint-disable jsx-a11y/anchor-is-valid */
 import React from 'react';
 import Link from 'next/link';
-import { Navbar, Container, Nav, Button } from 'react-bootstrap';
+import { Navbar, Container, Nav, Button, Form, FormControl } from 'react-bootstrap';
 import { signOut } from '../utils/auth';
 
 export default function NavBar() {
@@ -29,6 +29,11 @@ export default function NavBar() {
               My Charities
             </Link>
           </Nav>
+
+          {/* Search Bar */}
+          <Form className="d-flex me-3">
+            <FormControl type="search" placeholder="Search" className="me-2" aria-label="Search" />
+          </Form>
 
           <Button variant="danger" onClick={signOut}>
             Sign Out

@@ -13,7 +13,7 @@ export default function EventCard({ eventObj, onUpdate }) {
   };
 
   return (
-    <div className="charityCard">
+    <div className="eventCard">
       <br />
       <Card style={{ width: '15rem' }}>
         <Card.Img variant="top" src="https://cdn-icons-png.freepik.com/512/9548/9548191.png" />

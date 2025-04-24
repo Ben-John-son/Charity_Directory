@@ -34,7 +34,7 @@ function Events({ params }) {
     >
       {/* This function maps over Events here using EventCard component */}
       {events.map((event) => (
-        <EventCard key={event.id} eventObj={event} />
+        <EventCard key={event.id} eventObj={event} onUpdate={getAllEvents} />
       ))}
     </div>
   );

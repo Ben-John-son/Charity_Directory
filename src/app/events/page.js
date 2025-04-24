@@ -10,14 +10,14 @@ import EventCard from '@/components/EventCard';
 import { getEvents } from '@/api/eventAPI';
 
 function Events() {
-  // TODO: Set a state for books
+  // Set a state for Events
   const [events, setEvents] = useState([]);
 
-  // TODO: Get user ID using useAuth Hook
+  // may use this for user authentication in the future
   // const { user } = useAuth();
 
   const getAllEvents = () => {
-    getEvents(1).then(setEvents);
+    getEvents().then(setEvents);
   };
 
   useEffect(() => {
@@ -34,7 +34,7 @@ function Events() {
       <div className="d-flex flex-wrap">
         {/* This function maps over Events here using EventCard component */}
         {events.map((event) => (
-          <EventCard key={event.id} eventObj={event} />
+          <EventCard key={event.id} eventObj={event} onUpdate={getAllEvents} />
         ))}
       </div>
     </div>
