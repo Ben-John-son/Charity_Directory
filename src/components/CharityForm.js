@@ -22,7 +22,7 @@ const initialState = {
   contactEmail: '',
   contactPhone: '',
   website: '',
-  stars: 3,
+  stars: 4,
   donations: '',
   owners: '',
 };
