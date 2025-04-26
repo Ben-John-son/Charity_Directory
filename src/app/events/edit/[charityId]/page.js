@@ -9,12 +9,11 @@ export default function EditEvent({ params }) {
   const [editItem, setEditItem] = useState({});
   const { charityId } = params;
 
-  // TODO: make a call to the API to get the book data
   useEffect(() => {
     getSingleEvent(charityId).then(setEditItem);
   }, [charityId]);
 
-  // TODO: pass object to form
+  // pass object to form
   return (
     <div
       className="text-center d-flex flex-column justify-content-center align-items-center"

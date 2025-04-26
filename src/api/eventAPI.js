@@ -66,14 +66,14 @@ const deleteEvent = (id) =>
   });
 
 // UPDATE EVENT
-const updateEvents = (id) =>
+const updateEvents = (payload) =>
   new Promise((resolve, reject) => {
-    fetch(`${endpoint}/api/events/${id}`, {
+    fetch(`${endpoint}/api/events/${payload.id}`, {
       method: 'PUT',
       headers: {
         'Content-Type': 'application/json',
       },
-      body: JSON.stringify(id),
+      body: JSON.stringify(payload),
     })
       .then((response) => response.json())
       .then(resolve)

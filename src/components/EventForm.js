@@ -22,10 +22,14 @@ const initalState = {
   date: '',
 };
 
-function EventForm({ obj = initalState, params }) {
+function EventForm({ obj = initalState }) {
   const [eventInput, setEventInput] = useState(obj);
   const router = useRouter();
   const { user } = useAuth();
+
+  const path = window.location.pathname; // e.g., "/events/new/6"
+  const pathSegments = path.split('/'); // ["", "events", "new", "6"]
+  const idCharity = pathSegments[pathSegments.length - 1]; // "6"
 
   useEffect(() => {
     if (obj.id) setEventInput(obj);
@@ -39,7 +43,9 @@ function EventForm({ obj = initalState, params }) {
     }));
   };
 
-  const { idCharity } = params;
+  /* const pathname = typeof window !== 'undefined' ? window.location.pathname : '';
+  const idCharity = pathname.split('/').pop(); // Gets the last part of the URL
+  console.log('Extracted idCharity:', idCharity); */
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -48,9 +54,7 @@ function EventForm({ obj = initalState, params }) {
     } else {
       const payload = { ...eventInput, userUid: user.uid, charityId: idCharity };
       createEvent(payload).then(() => {
-        updateEvents(eventInput).then(() => {
-          router.push('/events');
-        });
+        router.push(`/events/${obj.id}`);
       });
     }
   };
@@ -103,6 +107,6 @@ EventForm.propTypes = {
     date: PropTypes.string.isRequired,
     id: PropTypes.string.isRequired,
   }),
-  params: PropTypes.objectOf({}).isRequired,
+  // params: PropTypes.objectOf({}).isRequired,
 };
 export default EventForm;

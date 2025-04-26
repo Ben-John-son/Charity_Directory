@@ -7,7 +7,13 @@ import Link from 'next/link';
 import { deleteEvent } from '../api/eventAPI';
 import { useAuth } from '../utils/context/authContext';
 
-export default function EventCard({ eventObj }) {
+export default function EventCard({ eventObj, onUpdate }) {
+  const deleteThisEvent = () => {
+    if (window.confirm(`Delete ${eventObj.name}?`)) {
+      deleteEvent(eventObj.id).then(() => onUpdate());
+    }
+  };
+
   const { user } = useAuth();
   return (
     <div className="eventCard">
@@ -31,17 +37,16 @@ export default function EventCard({ eventObj }) {
         <Card.Body>
           {eventObj.userUid === user.uid && (
             <>
-              <Link href={`events/edit/${eventObj.id}`} passHref>
+              <Link href={`/events/edit/${eventObj.id}`} passHref>
                 <Button variant="primary" className="m-2">
                   EDIT
                 </Button>
               </Link>
-              <Button variant="danger" onClick={() => deleteEvent(eventObj.id)}>
+              <Button variant="danger" onClick={() => deleteThisEvent()}>
                 DELETE
               </Button>
             </>
           )}
-          <Card.Link href="#">Delete</Card.Link>
         </Card.Body>
       </Card>
     </div>
@@ -61,7 +66,8 @@ EventCard.propTypes = {
     contactEmail: PropTypes.string.isRequired,
     contactPhone: PropTypes.string.isRequired,
     date: PropTypes.string.isRequired,
-    id: PropTypes.string.isRequired,
+    id: PropTypes.number.isRequired,
     userUid: PropTypes.string.isRequired,
   }),
+  onUpdate: PropTypes.func.isRequired,
 };
