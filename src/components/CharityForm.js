@@ -1,7 +1,7 @@
 'use client';
 
 import { useRouter } from 'next/navigation';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import Button from 'react-bootstrap/Button';
 import Form from 'react-bootstrap/Form';
 import FloatingLabel from 'react-bootstrap/FloatingLabel';
@@ -22,7 +22,7 @@ const initialState = {
   contactEmail: '',
   contactPhone: '',
   website: '',
-  stars: '',
+  stars: 3,
   donations: '',
   owners: '',
 };
@@ -33,11 +33,11 @@ function CharityForm({ obj = initialState }) {
   const router = useRouter();
   const { user } = useAuth();
 
-  // useEffect(() => {
-  //   myCharities(user.uid).then(setCharities);
-
-  //   if (obj.id) setFormInput(obj);
-  // }, [obj, user]);
+  useEffect(() => {
+    if (obj.id) setFormInput({ ...obj, charityId: obj.id });
+    console.log(obj);
+    // getCharities().then();
+  }, [obj, user]);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -50,7 +50,7 @@ function CharityForm({ obj = initialState }) {
   const handleSubmit = (e) => {
     e.preventDefault();
     if (obj.id) {
-      updateCharity(formInput).then(() => router.push(`/charities/${obj.id}`));
+      updateCharity(formInput).then(() => router.push(`/events/${obj.id}`));
     } else {
       const payload = { ...formInput, userUid: user.uid };
       if (formInput) {
@@ -105,9 +105,9 @@ function CharityForm({ obj = initialState }) {
       <FloatingLabel controlId="floatingInput2" label="Donations" className="mb-3">
         <Form.Control type="text" placeholder="Donations" name="donations" value={formInput.donations} onChange={handleChange} required />
       </FloatingLabel>
-      <FloatingLabel controlId="floatingTextarea" label="Stars" className="mb-3">
+      {/* <FloatingLabel controlId="floatingTextarea" label="Stars" className="mb-3">
         <Form.Control type="text" placeholder="1-5" style={{ height: '100px' }} name="stars" value={formInput.stars} onChange={handleChange} required />
-      </FloatingLabel>
+      </FloatingLabel> */}
 
       {/* SUBMIT BUTTON  */}
       <Button type="submit">{obj.id ? 'Update' : 'Create'} Charity</Button>

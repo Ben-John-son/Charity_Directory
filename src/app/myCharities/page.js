@@ -5,9 +5,9 @@ import { Button } from 'react-bootstrap';
 import Link from 'next/link';
 
 // import Link from 'next/link';
-import { useAuth } from '../../../utils/context/authContext';
-import CharityCard from '../../../components/CharityCard';
-import { myCharities } from '../../../api/charityAPI';
+import { useAuth } from '../../utils/context/authContext';
+import CharityCard from '../../components/CharityCard';
+import { myCharities } from '../../api/charityAPI';
 
 function AllMyCharities() {
   // TODO: Set a state for books
@@ -38,7 +38,7 @@ function AllMyCharities() {
       </div>
       <div className="d-flex flex-wrap">
         {charities.map((charity) => (
-          <CharityCard key={charity.id} charityObj={charity} />
+          <CharityCard key={charity.id} charityObj={charity} onUpdate={getMyCharities} />
         ))}
       </div>
     </div>

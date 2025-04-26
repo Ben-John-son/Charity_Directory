@@ -28,7 +28,7 @@ const getCharities = () =>
 
 const getSingleCharity = (id) =>
   new Promise((resolve, reject) => {
-    fetch(`${endpoint}/${id}`, {
+    fetch(`${endpoint}/api/charities/${id}`, {
       method: 'GET',
       headers: {
         'Content-Type': 'application/json',
@@ -60,7 +60,7 @@ const myCharities = (uid) =>
 
 const deleteCharity = (id) =>
   new Promise((resolve, reject) => {
-    fetch(`${endpoint}/${id}`, {
+    fetch(`${endpoint}/api/charities/${id}`, {
       method: 'DELETE',
       headers: {
         'Content-Type': 'application/json',

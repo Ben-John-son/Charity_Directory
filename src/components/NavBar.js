@@ -25,7 +25,7 @@ export default function NavBar() {
             <Link className="nav-link" href="/events">
               All Events
             </Link>
-            <Link className="nav-link" href="/charities/myCharities">
+            <Link className="nav-link" href="/myCharities">
               My Charities
             </Link>
           </Nav>
