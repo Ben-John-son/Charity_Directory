@@ -8,7 +8,13 @@ import Link from 'next/link';
 import { useAuth } from '../utils/context/authContext';
 import { deleteCharity } from '../api/charityAPI';
 
-export default function CharityCard({ charityObj }) {
+export default function CharityCard({ charityObj, onUpdate }) {
+  const deleteThisCharity = () => {
+    if (window.confirm(`Delete ${charityObj.name}?`)) {
+      deleteCharity(charityObj.id).then(() => onUpdate());
+    }
+  };
+
   const { user } = useAuth();
 
   return (
@@ -18,7 +24,7 @@ export default function CharityCard({ charityObj }) {
         <Card.Img variant="top" src="https://cdn-icons-png.freepik.com/512/9548/9548191.png" />
         <Card.Body>
           <Card.Title>{charityObj.name}</Card.Title>
-          <Card.Text>Charity Description</Card.Text>
+          <Card.Text>{charityObj.description}</Card.Text>
         </Card.Body>
         <ListGroup className="list-group-flush">
           <ListGroup.Item>{charityObj.contactPhone}</ListGroup.Item>
@@ -38,7 +44,7 @@ export default function CharityCard({ charityObj }) {
                   EDIT
                 </Button>
               </Link>
-              <Button variant="danger" onClick={() => deleteCharity(charityObj.id)}>
+              <Button variant="danger" onClick={deleteThisCharity}>
                 DELETE
               </Button>
             </>
@@ -61,5 +67,7 @@ CharityCard.propTypes = {
     state: PropTypes.string.isRequired,
     id: PropTypes.string.isRequired,
     userUid: PropTypes.string.isRequired,
+    description: PropTypes.string.isRequired,
   }),
+  onUpdate: PropTypes.func.isRequired,
 };
