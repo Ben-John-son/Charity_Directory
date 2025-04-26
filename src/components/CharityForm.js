@@ -50,7 +50,7 @@ function CharityForm({ obj = initialState }) {
   const handleSubmit = (e) => {
     e.preventDefault();
     if (obj.id) {
-      updateCharity(formInput).then(() => router.push(`/charities/${obj.id}`));
+      updateCharity(formInput).then(() => router.push(`/charities`));
     } else {
       const payload = { ...formInput, userUid: user.uid };
       if (formInput) {

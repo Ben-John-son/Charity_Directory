@@ -43,7 +43,6 @@ export default function CharityCard({ charityObj }) {
               </Button>
             </>
           )}
-          <Card.Link href="#">Delete</Card.Link>
         </Card.Body>
       </Card>
     </div>

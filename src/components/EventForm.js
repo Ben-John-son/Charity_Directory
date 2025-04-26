@@ -50,11 +50,11 @@ function EventForm({ obj = initalState }) {
   const handleSubmit = (e) => {
     e.preventDefault();
     if (obj.id) {
-      updateEvents(eventInput).then(() => router.push(`/events/${idCharity}`));
+      updateEvents(eventInput).then(() => router.push(`/events/${obj.charityId}`));
     } else {
       const payload = { ...eventInput, userUid: user.uid, charityId: idCharity };
       createEvent(payload).then(() => {
-        router.push(`/charities`);
+        router.push(`/events/${idCharity}`);
       });
     }
   };

@@ -39,7 +39,7 @@ function AllMyCharities() {
       <div className="d-flex flex-wrap">
         {charities.map((charity) => {
           console.log('Rendering charity:', charity);
-          return <CharityCard key={charity.id} charityObj={charity} />;
+          return <CharityCard key={charity.id} charityObj={charity} onUpdate={getMyCharities} />;
         })}
       </div>
     </div>
