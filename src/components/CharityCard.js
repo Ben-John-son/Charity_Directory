@@ -21,7 +21,7 @@ export default function CharityCard({ charityObj, onUpdate }) {
     <div className="charityCard">
       <br />
       <Card style={{ width: '15rem' }}>
-        <Card.Img variant="top" src="https://cdn-icons-png.freepik.com/512/9548/9548191.png" />
+        <Card.Img variant="top" src={charityObj.image} />
         <Card.Body>
           <Card.Title>{charityObj.name}</Card.Title>
           <Card.Text>{charityObj.description}</Card.Text>
@@ -67,6 +67,7 @@ CharityCard.propTypes = {
     id: PropTypes.string.isRequired,
     userUid: PropTypes.string.isRequired,
     description: PropTypes.string.isRequired,
+    image: PropTypes.string.isRequired,
   }),
   onUpdate: PropTypes.func.isRequired,
 };
