@@ -32,11 +32,22 @@ function Home() {
         height: '90vh',
         padding: '30px',
         maxWidth: 'auto',
+        marginTop: '100px',
         margin: '0 auto',
         background: '#D3F2E3',
       }}
     >
-      <div className="text-center my-4">
+      <div
+        className="text-center my-4"
+        style={{
+          height: '90vh',
+          padding: '30px',
+          maxWidth: 'auto',
+          marginTop: '100px',
+          margin: '0 auto',
+          background: '#D3F2E3',
+        }}
+      >
         <div className="addCharityBtn">
           <Link href="/charities/new" passHref>
             <Button>Add A Charity</Button>
