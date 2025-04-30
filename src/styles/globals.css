@@ -28,3 +28,11 @@ body {
   width: fi !important;
   height: fit-content !important;
 }
+
+.navbar {
+  font-size: 25px;
+}
+
+link:hover {
+color: rgb(180, 98, 111) !important;
+}

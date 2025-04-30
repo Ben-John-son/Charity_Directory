@@ -36,6 +36,11 @@ export default function CharityCard({ charityObj, onUpdate }) {
             <Card.Link href={`events/${charityObj.id}`}>Events</Card.Link>
           </ListGroup.Item>
         </ListGroup>
+        <ListGroup.Item>
+          {charityObj.charityTags.map((tagObj) => (
+            <ListGroup.Item key={tagObj.tag.id}>{tagObj.tag.name}</ListGroup.Item>
+          ))}
+        </ListGroup.Item>
         <Card.Body>
           {charityObj.userUid === user.uid && (
             <>
@@ -68,6 +73,7 @@ CharityCard.propTypes = {
     userUid: PropTypes.string.isRequired,
     description: PropTypes.string.isRequired,
     image: PropTypes.string.isRequired,
+    charityTags: PropTypes.string.isRequired,
   }),
   onUpdate: PropTypes.func.isRequired,
 };
