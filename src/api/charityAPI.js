@@ -99,4 +99,17 @@ const createCharity = (payload) =>
       .catch(reject);
   });
 
-export { getCharities, getSingleCharity, myCharities, deleteCharity, updateCharity, createCharity };
+const searchCharity = () =>
+  new Promise((resolve, reject) => {
+    fetch(`${endpoint}/api/charities/search`, {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    })
+      .then((response) => response.json())
+      .then((data) => resolve(data))
+      .catch(reject);
+  });
+
+export { getCharities, getSingleCharity, myCharities, deleteCharity, updateCharity, createCharity, searchCharity };
