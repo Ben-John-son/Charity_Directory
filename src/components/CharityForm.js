@@ -54,7 +54,7 @@ function CharityForm({ obj = initialState }) {
     } else {
       const payload = { ...formInput, userUid: user.uid };
       if (formInput) {
-        createCharity(payload).then(() => router.push(`/charities`));
+        createCharity(payload).then(() => router.push(`/events`));
       }
     }
   };
