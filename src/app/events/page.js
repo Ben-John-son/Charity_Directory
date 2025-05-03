@@ -28,14 +28,12 @@ function Events() {
     <div className="text-center my-4">
       <div className="addEventBtn">
         <Link href="/events/new" passHref>
-          <Button>Add an Events</Button>
+          <Button>Add an Event</Button>
         </Link>
       </div>
       <div className="d-flex flex-wrap">
         {/* This function maps over Events here using EventCard component */}
-        {events.map((event) => (
-          <EventCard key={event.id} eventObj={event} onUpdate={getAllEvents} />
-        ))}
+        {events === 'There are no events attached to this charity.' ? <h1>No Events Yet</h1> : events?.map((event) => <EventCard key={event.id} eventObj={event} onUpdate={getAllEvents} />)}
       </div>
     </div>
   );
