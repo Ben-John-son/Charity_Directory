@@ -20,13 +20,10 @@ export default function NavBar({ onUpdate }) {
           <Nav className="me-auto">
             {/* CLOSE NAVBAR ON LINK SELECTION: https://stackoverflow.com/questions/72813635/collapse-on-select-react-bootstrap-navbar-with-nextjs-not-working */}
             <Link className="nav-link" href="/charities">
-              All Charities
+              Home
             </Link>
             <Link className="nav-link" href="/myCharities">
               My Charities
-            </Link>
-            <Link className="nav-link" href="#">
-              Categories
             </Link>
           </Nav>
 

@@ -1,27 +1,36 @@
-import PropTypes from 'prop-types';
 import React, { useState } from 'react';
-import { Form, FormControl } from 'react-bootstrap';
+import PropTypes from 'prop-types';
+import { searchCharity } from '../api/charityAPI';
 
-export default function SearchBar({ onUpdate }) {
-  const [searchQuery, setSearchQuery] = useState('');
+export default function SearchBar({ onResults }) {
+  const [input, setInput] = useState('');
 
-  const handleSearch = (e) => {
-    const query = e.target.value;
-    setSearchQuery(query);
+  const handleChange = async (value) => {
+    setInput(value);
 
-    if (query.trim() !== '') {
-      // Simulate an API call or filtering logic
-      onUpdate(query); // Pass the query to the parent component
+    if (value.trim() === '') {
+      // Clear results if input is empty
+      onResults([]);
+      return;
+    }
+
+    try {
+      // Call the search API with the input value
+      const results = await searchCharity(value);
+      onResults(results);
+    } catch (error) {
+      console.error('Error searching charities:', error);
+      onResults([]);
     }
   };
 
   return (
-    <Form className="d-flex">
-      <FormControl type="search" placeholder="Search" className="me-2" aria-label="Search" value={searchQuery} onChange={handleSearch} />
-    </Form>
+    <div className="searchBar">
+      <input placeholder="Type to Search..." value={input} onChange={(e) => handleChange(e.target.value)} />
+    </div>
   );
 }
 
 SearchBar.propTypes = {
-  onUpdate: PropTypes.func.isRequired,
+  onResults: PropTypes.func.isRequired,
 };

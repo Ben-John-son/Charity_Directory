@@ -7,8 +7,9 @@ import Form from 'react-bootstrap/Form';
 import FloatingLabel from 'react-bootstrap/FloatingLabel';
 
 import PropTypes from 'prop-types';
-import { useAuth } from '../utils/context/authContext';
-import { createCharity, updateCharity } from '../api/charityAPI';
+import { useAuth } from '@/utils/context/authContext';
+import { createCharity, updateCharity } from '@/api/charityAPI';
+import { getTags } from '../api/charityTagsAPI';
 
 const initialState = {
   name: '',
@@ -25,18 +26,20 @@ const initialState = {
   stars: 5,
   donations: '',
   owners: '',
+  charityTags: [],
 };
 
 function CharityForm({ obj = initialState }) {
   // const [charity, setCharity] = useState(obj)
   const [formInput, setFormInput] = useState(obj);
+  const [charityTags, setTags] = useState([]);
   const router = useRouter();
   const { user } = useAuth();
 
   useEffect(() => {
+    getTags().then(setTags);
     if (obj.id) setFormInput({ ...obj, charityId: obj.id });
     console.log(obj);
-    // getCharities().then();
   }, [obj, user]);
 
   const handleChange = (e) => {
@@ -49,12 +52,20 @@ function CharityForm({ obj = initialState }) {
 
   const handleSubmit = (e) => {
     e.preventDefault();
+    console.log('Form Input on Submit:', formInput); // Debugging
+    // Transform charityTags to include TagId based on index
+    const transformedTags = formInput.charityTags.map((tagId, index) => ({
+      id: tagId,
+      TagId: index + 1, // Increment index by 1
+    }));
+
     if (obj.id) {
       updateCharity(formInput).then(() => router.push(`/charities`));
     } else {
-      const payload = { ...formInput, userUid: user.uid };
+      const payload = { ...formInput, userUid: user.uid, charityTags: transformedTags };
       if (formInput) {
-        createCharity(payload).then(() => router.push(`/events`));
+        console.log('API response:', payload); // Debugging
+        createCharity(payload).then(() => router.push(`/charities`));
       }
     }
   };
@@ -106,43 +117,34 @@ function CharityForm({ obj = initialState }) {
         <FloatingLabel controlId="floatingInput2" label="Donations" className="mb-3">
           <Form.Control type="text" placeholder="Donations" name="donations" value={formInput.donations} onChange={handleChange} required />
         </FloatingLabel>
-        {/* <div className='tags' style={{width: '100%', display: 'flex', flexDirection:}} >
-      <Form.Check // prettier-ignore
-        type="switch"
-        id="custom-switch"
-        label="Housing"
-      />
-      <Form.Check // prettier-ignore
-        type="switch"
-        id="custom-switch"
-        label="Food"
-      />
-      <Form.Check // prettier-ignore
-        type="switch"
-        id="custom-switch"
-        label="Education"
-      />
-      <Form.Check // prettier-ignore
-        type="switch"
-        id="custom-switch"
-        label="Job Placement"
-      />
-      <Form.Check // prettier-ignore
-        type="switch"
-        id="custom-switch"
-        label="Recovery"
-      />
-      <Form.Check // prettier-ignore
-        type="switch"
-        id="custom-switch"
-        label="Legal"
-      />
-      </div> */}
-        {/* <FloatingLabel controlId="floatingTextarea" label="Stars" className="mb-3">
-        <Form.Control type="text" placeholder="1-5" style={{ height: '100px' }} name="stars" value={formInput.stars} onChange={handleChange} required />
-      </FloatingLabel> */}
 
-        {/* SUBMIT BUTTON  */}
+        {/* CATEGORY MULTI-SELECT DROPDOWN */}
+        <FloatingLabel controlId="multiSelectDropdown" label="Categories">
+          <Form.Select
+            aria-label="CharityTags"
+            name="charityTags"
+            onChange={(e) => {
+              const selectedOptions = Array.from(e.target.selectedOptions, (option) => option.value);
+              console.log('Selected charityTags:', selectedOptions); // Debugging
+              setFormInput((prevState) => ({
+                ...prevState,
+                charityTags: selectedOptions,
+              }));
+            }}
+            className="mb-3"
+            value={formInput.charityTags || []}
+            multiple
+            required
+          >
+            {charityTags.map((tags) => (
+              <option key={tags.id} value={tags.id}>
+                {tags.name}
+              </option>
+            ))}
+          </Form.Select>
+        </FloatingLabel>
+
+        {/* SUBMIT BUTTON */}
         <Button type="submit">{obj.id ? 'Update' : 'Create'} Charity</Button>
       </Form>
     </div>
@@ -166,6 +168,8 @@ CharityForm.propTypes = {
     owners: PropTypes.string.isRequired,
     stars: PropTypes.number.isRequired,
     donations: PropTypes.number.isRequired,
+    charityTags: PropTypes.string.isRequired,
+    id: PropTypes.string.isRequired,
   }),
 };
 
