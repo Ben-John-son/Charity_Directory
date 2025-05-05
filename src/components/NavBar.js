@@ -32,7 +32,7 @@ export default function NavBar() {
             <Link className="nav-link" href="/myCharities">
               My Charities
             </Link>
-            <Link className="nav-link" href="#">
+            <Link className="nav-link" href="/categories">
               Categories
             </Link>
           </Nav>
