@@ -71,19 +71,30 @@ const deleteCharity = (id) =>
       .catch(reject);
   });
 
-const updateCharity = (payload) =>
-  new Promise((resolve, reject) => {
-    fetch(`${endpoint}/api/charities/${payload.id}`, {
+const updateCharity = async (payload) => {
+  try {
+    const response = await fetch(`${endpoint}/api/charities/${payload.id}`, {
       method: 'PUT',
       headers: {
         'Content-Type': 'application/json',
       },
       body: JSON.stringify(payload),
-    })
-      .then((response) => response.json())
-      .then((data) => resolve(data))
-      .catch(reject);
-  });
+    });
+
+    if (response.ok) {
+      const data = await response.json();
+      console.log('Charity updated successfully:', data);
+      return data;
+    } 
+      const errorData = await response.json();
+      console.error('Failed to update charity:', errorData);
+      throw new Error('Failed to update charity');
+    
+  } catch (error) {
+    console.error('Error updating charity:', error);
+    throw error;
+  }
+};
 
 const createCharity = (payload) =>
   new Promise((resolve, reject) => {

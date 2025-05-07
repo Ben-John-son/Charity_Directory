@@ -9,8 +9,15 @@ export default function EditCharity({ params }) {
   const [editItem, setEditItem] = useState({});
   // const [isLoading, setIsLoading] = useState(true);
   // const [error, setError] = useState(null);
-
   const { id } = params;
+
+  const handleUpdate = () => {
+    if (id) {
+      getSingleCharity(id).then((data) => {
+        setEditItem(data); // Refresh the charity data
+      });
+    }
+  };
 
   useEffect(() => {
     if (id) {
@@ -26,7 +33,7 @@ export default function EditCharity({ params }) {
     }
   }, [id]);
 
-  return <CharityForm obj={editItem} />;
+  return <CharityForm obj={editItem} onUpdate={handleUpdate} />;
 }
 
 EditCharity.propTypes = {
