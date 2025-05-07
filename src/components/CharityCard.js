@@ -22,7 +22,7 @@ export default function CharityCard({ charityObj, onUpdate }) {
       <br />
       <Card style={{ width: '18rem', height: 'contain' }}>
         <Card.Img variant="top" src={charityObj.image} className="cardImage" />
-        <Card.Body style={{ height: '45%', fontSize: '14px' }}>
+        <Card.Body style={{ height: '44%', fontSize: '14px' }}>
           <Card.Title>{charityObj.name}</Card.Title>
           <Card.Text>{charityObj.description}</Card.Text>
           <ListGroup className="list-group-flush">
