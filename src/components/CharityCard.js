@@ -20,40 +20,40 @@ export default function CharityCard({ charityObj, onUpdate }) {
   return (
     <div className="charityCard">
       <br />
-      <Card style={{ width: '15rem' }}>
-        <Card.Img variant="top" src={charityObj.image} />
-        <Card.Body>
+      <Card style={{ width: '18rem', height: 'contain' }}>
+        <Card.Img variant="top" src={charityObj.image} className="cardImage" />
+        <Card.Body style={{ height: '45%', fontSize: '14px' }}>
           <Card.Title>{charityObj.name}</Card.Title>
           <Card.Text>{charityObj.description}</Card.Text>
-        </Card.Body>
-        <ListGroup className="list-group-flush">
-          <ListGroup.Item>{charityObj.contactPhone}</ListGroup.Item>
+          <ListGroup className="list-group-flush">
+            <ListGroup.Item>{charityObj.contactPhone}</ListGroup.Item>
+            <ListGroup.Item>
+              {charityObj.street} {charityObj.city} {charityObj.state} {charityObj.zip}{' '}
+            </ListGroup.Item>
+            <ListGroup.Item>{charityObj.contactEmail}</ListGroup.Item>
+            <ListGroup.Item>
+              <Card.Link href={`events/${charityObj.id}`}>Events</Card.Link>
+            </ListGroup.Item>
+          </ListGroup>
           <ListGroup.Item>
-            {charityObj.street} {charityObj.city} {charityObj.state} {charityObj.zip}{' '}
+            {charityObj.charityTags.map((tagObj) => (
+              <ListGroup.Item key={tagObj.tag.id}>{tagObj.tag.name}</ListGroup.Item>
+            ))}
           </ListGroup.Item>
-          <ListGroup.Item>{charityObj.contactEmail}</ListGroup.Item>
           <ListGroup.Item>
-            <Card.Link href={`events/${charityObj.id}`}>Events</Card.Link>
-          </ListGroup.Item>
-        </ListGroup>
-        <ListGroup.Item>
-          {charityObj.charityTags.map((tagObj) => (
-            <ListGroup.Item key={tagObj.tag.id}>{tagObj.tag.name}</ListGroup.Item>
-          ))}
-        </ListGroup.Item>
-        <Card.Body>
-          {charityObj.userUid === user.uid && (
-            <>
-              <Link href={`charities/edit/${charityObj.id}`} passHref>
-                <Button variant="primary" className="m-2">
-                  EDIT
+            {charityObj.userUid === user.uid && (
+              <>
+                <Link href={`charities/edit/${charityObj.id}`} passHref>
+                  <Button variant="primary" style={{ height: '1.8rem' }}>
+                    EDIT
+                  </Button>
+                </Link>
+                <Button variant="danger" onClick={deleteThisCharity} style={{ height: '1.8rem' }}>
+                  DELETE
                 </Button>
-              </Link>
-              <Button variant="danger" onClick={deleteThisCharity}>
-                DELETE
-              </Button>
-            </>
-          )}
+              </>
+            )}
+          </ListGroup.Item>
         </Card.Body>
       </Card>
     </div>

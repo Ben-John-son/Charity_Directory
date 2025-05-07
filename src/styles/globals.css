@@ -24,10 +24,10 @@ body {
 }
 
 
-.card img{
+/* .card img{
   width: fi !important;
   height: fit-content !important;
-}
+} */
 
 .navbar {
   font-size: 25px;
@@ -35,4 +35,17 @@ body {
 
 link:hover {
 color: rgb(180, 98, 111) !important;
+}
+
+.cardImage {
+  height: 210px !important;
+}
+
+.nav-link:hover {
+color: rgb(199, 130, 2) !important;
+}
+
+.navbar-brand:hover {
+color:orange !important;
+
 }
