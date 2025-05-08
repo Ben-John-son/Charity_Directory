@@ -182,7 +182,7 @@ function CharityForm({ obj = initialState }) {
             placeholder="Zip Code"
             style={{ height: '100px' }}
             name="zip"
-            value={formInput.zip || ''} // Fallback to an empty stringg
+            value={formInput.zip || ''} // Fallback to an empty string
             onChange={handleChange}
             required
           />
