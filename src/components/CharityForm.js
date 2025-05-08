@@ -1,3 +1,5 @@
+/* eslint-disable padded-blocks */
+
 'use client';
 
 import { useRouter } from 'next/navigation';
@@ -7,8 +9,9 @@ import Form from 'react-bootstrap/Form';
 import FloatingLabel from 'react-bootstrap/FloatingLabel';
 
 import PropTypes from 'prop-types';
-import { useAuth } from '../utils/context/authContext';
-import { createCharity, updateCharity } from '../api/charityAPI';
+import { useAuth } from '@/utils/context/authContext';
+import { createCharity, updateCharity } from '@/api/charityAPI';
+import { getTags, deleteTags, createCharityTag } from '@/api/charityTagsAPI';
 
 const initialState = {
   name: '',
@@ -22,21 +25,32 @@ const initialState = {
   contactEmail: '',
   contactPhone: '',
   website: '',
-  stars: 5,
+  stars: '',
   donations: '',
   owners: '',
+  charityTags: [], // Initialize as an empty array
+};
+
+const initialCharityTags = {
+  charityId: '',
+  tagId: '',
 };
 
 function CharityForm({ obj = initialState }) {
-  // const [charity, setCharity] = useState(obj)
-  const [formInput, setFormInput] = useState(obj);
+  const [formInput, setFormInput] = useState({ ...initialState, ...obj, ...initialCharityTags });
+  const [charityTags, setTags] = useState([]);
   const router = useRouter();
   const { user } = useAuth();
 
   useEffect(() => {
-    if (obj.id) setFormInput({ ...obj, charityId: obj.id });
-    console.log(obj);
-    // getCharities().then();
+    getTags().then(setTags);
+    if (obj.id) {
+      setFormInput({
+        ...initialState,
+        ...obj,
+        charityTags: obj.charityTags.map((tag) => tag.tagId),
+      });
+    }
   }, [obj, user]);
 
   const handleChange = (e) => {
@@ -47,15 +61,52 @@ function CharityForm({ obj = initialState }) {
     }));
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    if (obj.id) {
-      updateCharity(formInput).then(() => router.push(`/events/${obj.id}`));
-    } else {
-      const payload = { ...formInput, userUid: user.uid };
-      if (formInput) {
-        createCharity(payload).then(() => router.push(`/events`));
+
+    // Transform selected tags into an array of objects
+    const transformedTags = formInput.charityTags.map((tagId) => ({
+      TagId: parseInt(tagId, 10), // Ensure TagId is an integer
+      CharityId: obj.id, // Include CharityId if updating
+    }));
+
+    // Construct the payload
+    const payload = {
+      ...formInput,
+      userUid: user.uid,
+      charityTags: transformedTags, // Use transformed tags
+    };
+
+    const clearTags = async () => {
+      try {
+        await deleteTags(obj.id); // Delete existing tags
+        console.log('Selection has been cleared!');
+      } catch (error) {
+        console.error('Error clearing tags:', error);
       }
+    };
+
+    try {
+      if (obj.id) {
+        // Update charity first
+        await updateCharity(payload);
+        console.log('Charity updated successfully:', payload);
+
+        // After charity is updated, clear old tags
+        await clearTags();
+
+        // Create new tags after clearing old ones
+        // eslint-disable-next-line no-use-before-define
+        await Promise.all(transformedTags.map((tag) => createCharityTag(tag)));
+        router.push(`/charities`);
+        console.log('Updated charity and tags successfully');
+      } else {
+        await createCharity(payload);
+        router.push(`/charities`);
+      }
+    } catch (error) {
+      console.error('Error processing charity and tags:', error);
+      alert('Failed to update or create charity. Please check the input and try again..');
     }
   };
 
@@ -63,86 +114,171 @@ function CharityForm({ obj = initialState }) {
     <div className="formDiv" style={{ width: '50%' }}>
       <Form onSubmit={handleSubmit} className="text-black">
         <h2 className="text-white mt-5">{obj.id ? 'Update' : 'Create'} Charity</h2>
-
         <FloatingLabel controlId="floatingInput1" label="Charity Name" className="mb-3">
-          <Form.Control type="text" placeholder="Charity Name" name="name" value={formInput.name} onChange={handleChange} required />
+          <Form.Control
+            type="text"
+            placeholder="Charity Name"
+            name="name"
+            value={formInput.name || ''} // Fallback to an empty string
+            onChange={handleChange}
+            required
+          />
         </FloatingLabel>
-
         <FloatingLabel controlId="floatingInput2" label="Image" className="mb-3">
-          <Form.Control type="url" placeholder="Enter an image URL" name="image" value={formInput.image} onChange={handleChange} required />
+          <Form.Control
+            type="url"
+            placeholder="Enter an image URL"
+            name="image"
+            value={formInput.image || ''} // Fallback to an empty string
+            onChange={handleChange}
+            required
+          />
         </FloatingLabel>
-
         <FloatingLabel controlId="floatingInput3" label="Description" className="mb-3">
-          <Form.Control type="text" placeholder="Description" name="description" value={formInput.description} onChange={handleChange} required />
+          <Form.Control
+            type="text"
+            placeholder="Description"
+            name="description"
+            value={formInput.description || ''} // Fallback to an empty string
+            onChange={handleChange}
+            required
+          />
         </FloatingLabel>
         <FloatingLabel controlId="floatingInput1" label="Street" className="mb-3">
-          <Form.Control type="text" placeholder="Street" name="street" value={formInput.street} onChange={handleChange} required />
+          <Form.Control
+            type="text"
+            placeholder="Street"
+            name="street"
+            value={formInput.street || ''} // Fallback to an empty string
+            onChange={handleChange}
+            required
+          />
         </FloatingLabel>
-
         <FloatingLabel controlId="floatingTextarea" label="City" className="mb-3">
-          <Form.Control type="text" placeholder="City" style={{ height: '100px' }} name="city" value={formInput.city} onChange={handleChange} required />
+          <Form.Control
+            type="text"
+            placeholder="City"
+            style={{ height: '100px' }}
+            name="city"
+            value={formInput.city || ''} // Fallback to an empty string
+            onChange={handleChange}
+            required
+          />
         </FloatingLabel>
         <FloatingLabel controlId="floatingTextarea" label="State" className="mb-3">
-          <Form.Control type="text" placeholder="State" style={{ height: '100px' }} name="state" value={formInput.state} onChange={handleChange} required />
+          <Form.Control
+            type="text"
+            placeholder="State"
+            style={{ height: '100px' }}
+            name="state"
+            value={formInput.state || ''} // Fallback to an empty string
+            onChange={handleChange}
+            required
+          />
         </FloatingLabel>
         <FloatingLabel controlId="floatingTextarea" label="Zip" className="mb-3">
-          <Form.Control type="text" placeholder="Zip Code" style={{ height: '100px' }} name="zip" value={formInput.zip} onChange={handleChange} required />
+          <Form.Control
+            type="text"
+            placeholder="Zip Code"
+            style={{ height: '100px' }}
+            name="zip"
+            value={formInput.zip || ''} // Fallback to an empty string
+            onChange={handleChange}
+            required
+          />
         </FloatingLabel>
         <FloatingLabel controlId="floatingTextarea" label="contactName" className="mb-3">
-          <Form.Control type="text" placeholder="Contact Name" style={{ height: '100px' }} name="contactName" value={formInput.contactName} onChange={handleChange} required />
+          <Form.Control
+            type="text"
+            placeholder="Contact Name"
+            style={{ height: '100px' }}
+            name="contactName"
+            value={formInput.contactName || ''} // Fallback to an empty string
+            onChange={handleChange}
+            required
+          />
         </FloatingLabel>
         <FloatingLabel controlId="floatingTextarea" label="Email" className="mb-3">
-          <Form.Control type="text" placeholder="Email" style={{ height: '100px' }} name="contactEmail" value={formInput.contactEmail} onChange={handleChange} required />
+          <Form.Control
+            type="text"
+            placeholder="Email"
+            style={{ height: '100px' }}
+            name="contactEmail"
+            value={formInput.contactEmail || ''} // Fallback to an empty string
+            onChange={handleChange}
+            required
+          />
         </FloatingLabel>
         <FloatingLabel controlId="floatingTextarea" label="Phone" className="mb-3">
-          <Form.Control type="text" placeholder="Phone" style={{ height: '100px' }} name="contactPhone" value={formInput.contactPhone} onChange={handleChange} required />
+          <Form.Control
+            type="text"
+            placeholder="Phone"
+            style={{ height: '100px' }}
+            name="contactPhone"
+            value={formInput.contactPhone || ''} // Fallback to an empty string
+            onChange={handleChange}
+            required
+          />
         </FloatingLabel>
         <FloatingLabel controlId="floatingTextarea" label="Website" className="mb-3">
-          <Form.Control type="text" placeholder="State" style={{ height: '100px' }} name="website" value={formInput.website} onChange={handleChange} required />
+          <Form.Control
+            type="text"
+            placeholder="State"
+            style={{ height: '100px' }}
+            name="website"
+            value={formInput.website || ''} // Fallback to an empty string
+            onChange={handleChange}
+            required
+          />
         </FloatingLabel>
         <FloatingLabel controlId="floatingInput2" label="Owners" className="mb-3">
-          <Form.Control type="text" placeholder="Owners" name="owners" value={formInput.owners} onChange={handleChange} required />
+          <Form.Control
+            type="text"
+            placeholder="Owners"
+            name="owners"
+            value={formInput.owners || ''} // Fallback to an empty string
+            onChange={handleChange}
+            required
+          />
         </FloatingLabel>
         <FloatingLabel controlId="floatingInput2" label="Donations" className="mb-3">
-          <Form.Control type="text" placeholder="Donations" name="donations" value={formInput.donations} onChange={handleChange} required />
+          <Form.Control
+            type="text"
+            placeholder="Donations"
+            name="donations"
+            value={formInput.donations || ''} // Fallback to an empty string
+            onChange={handleChange}
+            required
+          />
         </FloatingLabel>
-        {/* <div className='tags' style={{width: '100%', display: 'flex', flexDirection:}} >
-      <Form.Check // prettier-ignore
-        type="switch"
-        id="custom-switch"
-        label="Housing"
-      />
-      <Form.Check // prettier-ignore
-        type="switch"
-        id="custom-switch"
-        label="Food"
-      />
-      <Form.Check // prettier-ignore
-        type="switch"
-        id="custom-switch"
-        label="Education"
-      />
-      <Form.Check // prettier-ignore
-        type="switch"
-        id="custom-switch"
-        label="Job Placement"
-      />
-      <Form.Check // prettier-ignore
-        type="switch"
-        id="custom-switch"
-        label="Recovery"
-      />
-      <Form.Check // prettier-ignore
-        type="switch"
-        id="custom-switch"
-        label="Legal"
-      />
-      </div> */}
-        {/* <FloatingLabel controlId="floatingTextarea" label="Stars" className="mb-3">
-        <Form.Control type="text" placeholder="1-5" style={{ height: '100px' }} name="stars" value={formInput.stars} onChange={handleChange} required />
-      </FloatingLabel> */}
 
-        {/* SUBMIT BUTTON  */}
+        {/* More form fields for other properties like address, contact info, etc. */}
+
+        {/* CATEGORY MULTI-SELECT DROPDOWN */}
+        <FloatingLabel controlId="multiSelectDropdown" label="Categories">
+          <Form.Select
+            aria-label="CharityTags"
+            name="charityTags"
+            onChange={(e) => {
+              const selectedOptions = Array.from(e.target.selectedOptions, (option) => option.value);
+              setFormInput((prevState) => ({
+                ...prevState,
+                charityTags: selectedOptions,
+              }));
+            }}
+            className="mb-3"
+            value={formInput.charityTags || []}
+            multiple
+          >
+            {charityTags.map((tags) => (
+              <option key={tags.id} value={tags.id}>
+                {tags.name}
+              </option>
+            ))}
+          </Form.Select>
+        </FloatingLabel>
+
+        {/* SUBMIT BUTTONn */}
         <Button type="submit">{obj.id ? 'Update' : 'Create'} Charity</Button>
       </Form>
     </div>
@@ -166,6 +302,13 @@ CharityForm.propTypes = {
     owners: PropTypes.string.isRequired,
     stars: PropTypes.number.isRequired,
     donations: PropTypes.number.isRequired,
+    charityTags: PropTypes.arrayOf(
+      PropTypes.shape({
+        tagId: PropTypes.string.isRequired,
+        charityId: PropTypes.string,
+      }),
+    ).isRequired,
+    id: PropTypes.string.isRequired,
   }),
 };
 

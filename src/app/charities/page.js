@@ -10,7 +10,7 @@ import CharityCard from '../../components/CharityCard';
 import { getCharities } from '../../api/charityAPI';
 
 function Home() {
-  // TODO: Set a state for books
+  // TODO: Set a state for charities
   const [charities, setCharities] = useState([]);
 
   // TODO: Get user ID using useAuth Hook
@@ -23,7 +23,7 @@ function Home() {
   useEffect(() => {
     getAllCharities();
     console.log(user);
-  }, []);
+  }, [user]);
 
   return (
     <div
@@ -53,6 +53,7 @@ function Home() {
             <Button>Add A Charity</Button>
           </Link>
         </div>
+
         <div className="d-flex flex-wrap">
           {charities.map((charity) => (
             <CharityCard key={charity.id} charityObj={charity} onUpdate={getAllCharities} />
