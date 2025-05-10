@@ -34,7 +34,7 @@ function Events({ params }) {
     <div className="text-center my-4">
       <div className="addEventBtn">
         {charityInfo.userUid === user.uid && (
-          <Link href="/events/new" passHref>
+          <Link href={`/events/new/${charityId}`} passHref>
             <Button>Add an Event</Button>
           </Link>
         )}
@@ -69,9 +69,11 @@ function Events({ params }) {
        <li key={tagObj.tag.id}>{tagObj.tag.name}</li>
     ))}
     </ul> */}
-            {events.map((event) => (
-              <EventCard key={event.id} eventObj={event} onUpdate={getAllEvents} />
-            ))}
+            <div style={{ display: 'flex', flexDirection: 'row', justifyContent: 'center', justifyItems: 'center', gap: '40px' }}>
+              {events.map((event) => (
+                <EventCard key={event.id} eventObj={event} onUpdate={getAllEvents} />
+              ))}
+            </div>
           </div>
         )}
       </div>

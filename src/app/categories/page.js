@@ -21,7 +21,7 @@ export default function Categories() {
     if (event.target.value === 'healthcare') {
       setShowCharities(charitiesByTags.filter((charity) => charity.charityTags.some((tag) => tag.tag.name === 'Healthcare')).map((tags) => <CharityCard key={tags.id} charityObj={tags} onUpdate={charitiesByTags} />));
     }
-    if (event.target.value === 'food Safety') {
+    if (event.target.value === 'food security') {
       setShowCharities(charitiesByTags.filter((charity) => charity.charityTags.some((tag) => tag.tag.name === 'Food Security')).map((tags) => <CharityCard key={tags.id} charityObj={tags} onUpdate={charitiesByTags} />));
     }
     if (event.target.value === 'youth empowerment') {
@@ -44,7 +44,7 @@ export default function Categories() {
         <Button value="environment" variant="primary" size="lg" onClick={handleClick} active>
           Environment
         </Button>
-        <Button value="food safety" variant="primary" size="lg" onClick={handleClick} active>
+        <Button value="food security" variant="primary" size="lg" onClick={handleClick} active>
           Food Security
         </Button>
         <Button value="healthcare" variant="primary" size="lg" onClick={handleClick} active>
