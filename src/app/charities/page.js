@@ -5,6 +5,7 @@ import { Button } from 'react-bootstrap';
 import Link from 'next/link';
 
 // import Link from 'next/link';
+import { useSearch } from '@/utils/context/SearchContext'; // 🔍 IMPORT
 import { useAuth } from '../../utils/context/authContext';
 import CharityCard from '../../components/CharityCard';
 import { getCharities } from '../../api/charityAPI';
@@ -12,6 +13,7 @@ import { getCharities } from '../../api/charityAPI';
 function Home() {
   // TODO: Set a state for charities
   const [charities, setCharities] = useState([]);
+  const { results } = useSearch(); // 🔍 GET SEARCH RESULTS
 
   // TODO: Get user ID using useAuth Hook
   const { user } = useAuth();
@@ -25,6 +27,7 @@ function Home() {
     console.log(user);
   }, [user]);
 
+  const displayCharities = results.length > 0 ? results : charities;
   return (
     <div
       className="text-center d-flex flex-column justify-content-center align-items-center"
@@ -55,7 +58,7 @@ function Home() {
         </div>
 
         <div className="d-flex flex-wrap">
-          {charities.map((charity) => (
+          {displayCharities.map((charity) => (
             <CharityCard key={charity.id} charityObj={charity} onUpdate={getAllCharities} />
           ))}
         </div>

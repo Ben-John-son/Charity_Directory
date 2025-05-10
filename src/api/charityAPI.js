@@ -85,11 +85,10 @@ const updateCharity = async (payload) => {
       const data = await response.json();
       console.log('Charity updated successfully:', data);
       return data;
-    } 
-      const errorData = await response.json();
-      console.error('Failed to update charity:', errorData);
-      throw new Error('Failed to update charity');
-    
+    }
+    const errorData = await response.json();
+    console.error('Failed to update charity:', errorData);
+    throw new Error('Failed to update charity');
   } catch (error) {
     console.error('Error updating charity:', error);
     throw error;
@@ -110,9 +109,9 @@ const createCharity = (payload) =>
       .catch(reject);
   });
 
-const searchCharity = () =>
+const searchCharity = (query) =>
   new Promise((resolve, reject) => {
-    fetch(`${endpoint}/api/charities/search`, {
+    fetch(`${endpoint}/api/charities/search?query=${query}`, {
       method: 'GET',
       headers: {
         'Content-Type': 'application/json',

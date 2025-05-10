@@ -13,6 +13,9 @@ function Events() {
   // Set a state for Events
   const [events, setEvents] = useState([]);
 
+  const path = window.location.pathname; // e.g., "/events/new/6"
+  const pathSegments = path.split('/'); // ["", "events", "new", "6"]
+  const idCharity = pathSegments[pathSegments.length - 1]; // "6"
   // may use this for user authentication in the future
   // const { user } = useAuth();
 
@@ -27,7 +30,7 @@ function Events() {
   return (
     <div className="text-center my-4">
       <div className="addEventBtn">
-        <Link href="/events/new" passHref>
+        <Link href={`/events/new/${idCharity}`} passHref>
           <Button>Add an Event</Button>
         </Link>
       </div>

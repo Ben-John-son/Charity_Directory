@@ -3,6 +3,7 @@
 import React, { useEffect, useState } from 'react';
 import { Button } from 'react-bootstrap';
 import Link from 'next/link';
+import { useSearch } from '@/utils/context/SearchContext'; // 🔍 IMPORT
 
 // import Link from 'next/link';
 import { useAuth } from '../utils/context/authContext';
@@ -12,7 +13,7 @@ import { getCharities } from '../api/charityAPI';
 function Home() {
   // TODO: Set a state for books
   const [charities, setCharities] = useState([]);
-
+  const { results } = useSearch(); // 🔍 GET SEARCH RESULTS
   // TODO: Get user ID using useAuth Hook
   const { user } = useAuth();
 
@@ -24,6 +25,8 @@ function Home() {
     getAllCharities();
     console.log(user);
   }, []);
+
+  const displayCharities = results.length > 0 ? results : charities;
 
   return (
     <div
@@ -55,7 +58,7 @@ function Home() {
           </Link>
         </div>
         <div className="d-flex flex-wrap">
-          {charities.map((charity) => (
+          {displayCharities.map((charity) => (
             <CharityCard key={charity.id} charityObj={charity} onUpdate={getAllCharities} />
           ))}
         </div>

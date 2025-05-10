@@ -25,8 +25,8 @@ const initialState = {
   contactEmail: '',
   contactPhone: '',
   website: '',
-  stars: '',
-  donations: '',
+  stars: 0,
+  donations: 0,
   owners: '',
   charityTags: [], // Initialize as an empty array
 };
@@ -66,21 +66,21 @@ function CharityForm({ obj = initialState }) {
 
     // Transform selected tags into an array of objects
     const transformedTags = formInput.charityTags.map((tagId) => ({
-      TagId: parseInt(tagId, 10), // Ensure TagId is an integer
-      CharityId: obj.id, // Include CharityId if updating
+      tagId: parseInt(tagId, 10), // Ensure TagId is an integer
+      charityId: obj.id, // Include CharityId if updating
     }));
 
     // Construct the payload
     const payload = {
       ...formInput,
       userUid: user.uid,
-      charityTags: transformedTags, // Use transformed tags
+      charityTags: transformedTags, // Include the transformed tags
     };
 
     const clearTags = async () => {
       try {
         await deleteTags(obj.id); // Delete existing tags
-        console.log('Selection has been cleared!');
+        alert('Selection has been cleared!');
       } catch (error) {
         console.error('Error clearing tags:', error);
       }
@@ -182,7 +182,7 @@ function CharityForm({ obj = initialState }) {
             placeholder="Zip Code"
             style={{ height: '100px' }}
             name="zip"
-            value={formInput.zip || ''} // Fallback to an empty stringg
+            value={formInput.zip || ''} // Fallback to an empty string
             onChange={handleChange}
             required
           />
@@ -251,6 +251,16 @@ function CharityForm({ obj = initialState }) {
             required
           />
         </FloatingLabel>
+        <FloatingLabel controlId="floatingInput2" label="Stars" className="mb-3">
+          <Form.Control
+            type="number"
+            placeholder="Stars"
+            name="stars"
+            value={formInput.stars || ''} // Fallback to an empty string
+            onChange={handleChange}
+            required
+          />
+        </FloatingLabel>
 
         {/* More form fields for other properties like address, contact info, etc. */}
 
@@ -278,7 +288,7 @@ function CharityForm({ obj = initialState }) {
           </Form.Select>
         </FloatingLabel>
 
-        {/* SUBMIT BUTTONn */}
+        {/* SUBMIT BUTTON */}
         <Button type="submit">{obj.id ? 'Update' : 'Create'} Charity</Button>
       </Form>
     </div>

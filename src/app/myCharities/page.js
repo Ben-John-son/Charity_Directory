@@ -6,6 +6,7 @@ import Link from 'next/link';
 
 // import Link from 'next/link';
 
+import { useSearch } from '@/utils/context/SearchContext'; // 🔍 IMPORT
 import { useAuth } from '../../utils/context/authContext';
 import CharityCard from '../../components/CharityCard';
 import { myCharities } from '../../api/charityAPI';
@@ -13,7 +14,7 @@ import { myCharities } from '../../api/charityAPI';
 function AllMyCharities() {
   // TODO: Set a state for books
   const [charities, setCharities] = useState([]);
-
+  const { results } = useSearch(); // 🔍 GET SEARCH RESULTS
   // TODO: Get user ID using useAuth Hook
   const { user } = useAuth();
 
@@ -30,6 +31,7 @@ function AllMyCharities() {
     }
   }, [user]);
 
+  const displayCharities = results.length > 0 ? results : charities;
   return (
     <div className="text-center my-4">
       <div className="addCharityBtn">
@@ -38,7 +40,7 @@ function AllMyCharities() {
         </Link>
       </div>
       <div className="d-flex flex-wrap">
-        {charities.map((charity) => (
+        {displayCharities.map((charity) => (
           <CharityCard key={charity.id} charityObj={charity} onUpdate={getMyCharities} />
         ))}
       </div>

@@ -34,7 +34,7 @@ function Events({ params }) {
     <div className="text-center my-4">
       <div className="addEventBtn">
         {charityInfo.userUid === user.uid && (
-          <Link href="/events/new" passHref>
+          <Link href={`/events/new/${charityId}`} passHref>
             <Button>Add an Event</Button>
           </Link>
         )}

@@ -1,36 +1,36 @@
 import React, { useState } from 'react';
-import PropTypes from 'prop-types';
+import { FaSearch } from 'react-icons/fa'; // ✅ Font Awesome search icon (or any icon lib)
 import { searchCharity } from '../api/charityAPI';
+import { useSearch } from '../utils/context/SearchContext';
 
-export default function SearchBar({ onResults }) {
+export default function SearchBar() {
   const [input, setInput] = useState('');
+  const { setResults } = useSearch();
 
   const handleChange = async (value) => {
     setInput(value);
-
+    console.log('Searching for:', value); // ✅ ADD THIS
     if (value.trim() === '') {
-      // Clear results if input is empty
-      onResults([]);
+      setResults([]);
       return;
     }
 
     try {
-      // Call the search API with the input value
       const results = await searchCharity(value);
-      onResults(results);
+      console.log('Results:', results); // ✅ ADD THIS TOO
+      setResults(results);
     } catch (error) {
       console.error('Error searching charities:', error);
-      onResults([]);
+      setResults([]);
     }
   };
 
   return (
-    <div className="searchBar">
-      <input placeholder="Type to Search..." value={input} onChange={(e) => handleChange(e.target.value)} />
-    </div>
+    <form onSubmit={handleChange} className="d-flex align-items-center searchBar">
+      <input type="text" placeholder="Search charities..." value={input} onChange={(e) => setInput(e.target.value)} className="form-control me-2" />
+      <button type="submit" className="btn btn-outline-light" aria-label="Search" style={{ marginRight: '10px' }}>
+        <FaSearch />
+      </button>
+    </form>
   );
 }
-
-SearchBar.propTypes = {
-  onResults: PropTypes.func.isRequired,
-};

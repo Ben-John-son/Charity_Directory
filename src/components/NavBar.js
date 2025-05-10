@@ -1,13 +1,12 @@
 /* eslint-disable jsx-a11y/anchor-is-valid */
 import Link from 'next/link';
 import { Navbar, Container, Nav, Button } from 'react-bootstrap';
-import PropTypes from 'prop-types';
 import { signOut } from '../utils/auth';
 import SearchBar from './searchBar';
 
 // import { getEvent } from '../api/eventAPI';
 
-export default function NavBar({ onUpdate }) {
+export default function NavBar() {
   return (
     <Navbar collapseOnSelect expand="lg" style={{ background: ' #7C4C21' }}>
       <Container>
@@ -27,7 +26,7 @@ export default function NavBar({ onUpdate }) {
             </Link>
           </Nav>
 
-          <SearchBar onUpdate={onUpdate} />
+          <SearchBar />
           <Button variant="danger" onClick={signOut}>
             Sign Out
           </Button>
@@ -36,7 +35,3 @@ export default function NavBar({ onUpdate }) {
     </Navbar>
   );
 }
-
-NavBar.propTypes = {
-  onUpdate: PropTypes.func.isRequired,
-};
